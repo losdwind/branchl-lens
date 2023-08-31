@@ -1,31 +1,89 @@
-import { StyleSheet } from 'react-native';
+import {
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  ListRenderItemInfo,
+} from "react-native";
+import { Box } from "../../components/Box";
+import { Text } from "../../components/Text";
+import EditScreenInfo from "../../components/EditScreenInfo";
+import getProfileByAddress from "../../gql/query/getProfileByAddress";
+import getProfile from "../../gql/query/getProfile";
+import getPublications from "../../gql/query/getPublications";
+import { wallet } from "../../utils/wallet";
+import { useQuery } from "@tanstack/react-query";
+import Publication from "../../types/Publication";
+import { Card, CardMoment } from "../../components/Card";
+import useLensUser from "../../utils/useLensUser";
+import {
+  useAddress,
+  useContract,
+  useSDK,
+  useSigner,
+  Web3Button,
+} from "@thirdweb-dev/react-native";
 
-import EditScreenInfo from '../../components/EditScreenInfo';
-import { Text, View } from '../../components/Themed';
+export default function HomeScreen() {
+  // Get the SDK and signer for us to use for interacting with the lens smart contract
+  const sdk = useSDK();
+  const signer = useSigner();
+  const address = useAddress();
+  // Load the same queries we did on the server-side.
+  // Will load data instantly since it's already in the cache.
+  const { isSignedIn } = useLensUser();
+  const { data: profile, isLoading: loadingProfile } = useQuery(
+    ["profile"],
+    () => getProfile("atoms.lens")
+  );
+  console.log(profile);
 
-export default function TabTwoScreen() {
+  // When the profile is loaded, load the publications for that profile
+  const { data: publications, isLoading: loadingPublications } = useQuery(
+    ["publications"],
+    () => getPublications(profile?.id as string, 10),
+    {
+      // Only run this query if the profile is loaded
+      enabled: !!profile,
+    }
+  );
+
+  const Item = ({ publication }: { publication: Publication }) => (
+    <CardMoment
+      title={publication.metadata.name}
+      content={publication.metadata.content}
+      images={publication.metadata.image ? [publication.metadata.image] : []}
+    />
+  );
+
+  if (loadingPublications) {
+    return <Text>Loading...</Text>;
+  }
+
+  console.log(publications);
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={publications}
+        renderItem={({ item }) => <Item publication={item} />}
+        keyExtractor={(item) => item.id}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });
