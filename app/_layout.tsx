@@ -1,4 +1,6 @@
 import "../utils/shims";
+import { ThirdWebProvider } from "../provider/ThirdwebProvider";
+import { ReactQueryProvider } from "../provider/ReactQueryProvider";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { lightTheme, darkTheme, Theme } from "../theme";
 import { ThemeProvider, useTheme } from "@shopify/restyle";
@@ -6,16 +8,6 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
-import {
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
-import { ThirdwebProvider } from "@thirdweb-dev/react-native";
-import {
-  EXPO_PUBLIC_THIRDWEB_ACTIVE_CHAIN,
-  EXPO_PUBLIC_THIRDWEB_CLIENT_ID,
-} from "@env";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -59,14 +51,10 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const theme = useTheme<Theme>();
-  const queryClient = new QueryClient();
 
   return (
-    <ThirdwebProvider
-      activeChain={EXPO_PUBLIC_THIRDWEB_ACTIVE_CHAIN}
-      clientId={EXPO_PUBLIC_THIRDWEB_CLIENT_ID}
-    >
-      <QueryClientProvider client={queryClient}>
+    <ThirdWebProvider>
+      <ReactQueryProvider>
         <ThemeProvider theme={colorScheme === "dark" ? darkTheme : lightTheme}>
           <Stack
             screenOptions={{
@@ -86,7 +74,7 @@ function RootLayoutNav() {
             />
           </Stack>
         </ThemeProvider>
-      </QueryClientProvider>
-    </ThirdwebProvider>
+      </ReactQueryProvider>
+    </ThirdWebProvider>
   );
 }

@@ -15,19 +15,19 @@ import { useQuery } from "@tanstack/react-query";
 import Publication from "../../types/Publication";
 import { Card, CardMoment } from "../../components/Card";
 import useLensUser from "../../utils/useLensUser";
-import {
-  useAddress,
-  useContract,
-  useSDK,
-  useSigner,
-  Web3Button,
-} from "@thirdweb-dev/react-native";
+// import {
+//   useAddress,
+//   useContract,
+//   useSDK,
+//   useSigner,
+//   Web3Button,
+// } from "../../utils/thirdwebWapper"
 
 export default function HomeScreen() {
   // Get the SDK and signer for us to use for interacting with the lens smart contract
-  const sdk = useSDK();
-  const signer = useSigner();
-  const address = useAddress();
+  // const sdk = useSDK();
+  // const signer = useSigner();
+  // const address = useAddress();
   // Load the same queries we did on the server-side.
   // Will load data instantly since it's already in the cache.
   const { isSignedIn } = useLensUser();
