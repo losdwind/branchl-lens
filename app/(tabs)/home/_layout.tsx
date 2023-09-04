@@ -4,17 +4,21 @@ import {
   FlatList,
   ListRenderItemInfo,
 } from "react-native";
-import { Box } from "../../components/Box";
-import { Text } from "../../components/Text";
-import EditScreenInfo from "../../components/EditScreenInfo";
-import getProfileByAddress from "../../gql/query/getProfileByAddress";
-import getProfile from "../../gql/query/getProfile";
-import getPublications from "../../gql/query/getPublications";
-import { wallet } from "../../utils/wallet";
+import {
+  EditScreenInfo,
+  CardMoment,
+  Box,
+  Text,
+  TextButton,
+} from "@/components";
+import getProfileByAddress from "@/gql/query/getProfileByAddress";
+import getProfile from "@/gql/query/getProfile";
+import getPublications from "@/gql/query/getPublications";
+import { wallet } from "@/utils/wallet";
 import { useQuery } from "@tanstack/react-query";
-import Publication from "../../types/Publication";
-import { Card, CardMoment } from "../../components/Card";
-import useLensUser from "../../utils/useLensUser";
+import Publication from "@/types/Publication";
+import useLensUser from "@/utils/useLensUser";
+import { useState } from "react";
 // import {
 //   useAddress,
 //   useContract,
@@ -47,9 +51,22 @@ export default function HomeScreen() {
     }
   );
 
+  const filters = ["All", "Moment", "Todo", "Person", "Branch"]; // Replace with your actual filters
+  const [selectedFilter, setSelectedFilter] = useState("All");
+  const filterFunction = (item: Publication) => {
+    if (selectedFilter === "All") {
+      return true;
+    }
+
+    if (!item.metadata.tags) {
+      return item.metadata.tags[0] === selectedFilter;
+    }
+
+    return true;
+  };
+
   const Item = ({ publication }: { publication: Publication }) => (
     <CardMoment
-      title={publication.metadata.name}
       content={publication.metadata.content}
       images={publication.metadata.image ? [publication.metadata.image] : []}
     />
@@ -60,30 +77,30 @@ export default function HomeScreen() {
   }
 
   console.log(publications);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView >
+      <Box
+        flexDirection="row"
+        justifyContent="space-between"
+        gap={"s"}
+        paddingVertical={"s"}
+        margin="m"
+      >
+        {filters.map((filter) => (
+          <TextButton
+            key={filter}
+            label={filter}
+            onPress={() => setSelectedFilter(filter)}
+            isActive={filter === selectedFilter}
+          />
+        ))}
+      </Box>
       <FlatList
-        data={publications}
+        data={publications.filter(filterFunction)}
         renderItem={({ item }) => <Item publication={item} />}
         keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});

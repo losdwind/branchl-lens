@@ -4,7 +4,7 @@ import { Box } from "./Box";
 import { Text } from "./Text";
 import { ExternalLink } from "./ExternalLink";
 
-export default function EditScreenInfo({ path }: { path: string }) {
+export function EditScreenInfo({ path }: { path: string }) {
   return (
     <Box>
       <Box style={styles.getStartedContainer}>

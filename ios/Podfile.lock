@@ -14,11 +14,11 @@ PODS:
     - ReactCommon/turbomodule/core
   - EXConstants (14.4.2):
     - ExpoModulesCore
-  - EXFileSystem (15.4.3):
+  - EXFileSystem (15.4.4):
     - ExpoModulesCore
   - EXFont (11.4.0):
     - ExpoModulesCore
-  - Expo (49.0.8):
+  - Expo (49.0.9):
     - ExpoModulesCore
   - ExpoClipboard (4.3.1):
     - ExpoModulesCore
@@ -34,7 +34,7 @@ PODS:
     - SDWebImageWebPCoder (~> 0.11.0)
   - ExpoKeepAwake (12.3.0):
     - ExpoModulesCore
-  - ExpoModulesCore (1.5.10):
+  - ExpoModulesCore (1.5.11):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - React-NativeModulesApple
@@ -517,14 +517,14 @@ PODS:
     - React-jsi (= 0.72.4)
     - React-logger (= 0.72.4)
     - React-perflogger (= 0.72.4)
-  - RNCAsyncStorage (1.19.3):
+  - RNCAsyncStorage (1.18.2):
     - React-Core
   - RNGestureHandler (2.12.1):
     - React-Core
   - RNScreens (3.22.1):
     - React-Core
     - React-RCTImage
-  - RNSVG (13.13.0):
+  - RNSVG (13.9.0):
     - React-Core
   - SDWebImage (5.15.8):
     - SDWebImage/Core (= 5.15.8)
@@ -773,15 +773,15 @@ SPEC CHECKSUMS:
   EXApplication: 02655a251434d564bb0e73291f5a490c74b5b76f
   EXAV: f393dfc0b28214d62855a31e06eb21d426d6e2da
   EXConstants: ce5bbea779da8031ac818c36bea41b10e14d04e1
-  EXFileSystem: 941b273758aee14be2ecc671dacb4f10dd28c833
+  EXFileSystem: 2b826a3bf1071a4b80a8457e97124783d1ac860e
   EXFont: 738c44c390953ebcbab075a4848bfbef025fd9ee
-  Expo: 900dc423a0e2c7e822b2c683a89426e82695fb27
+  Expo: 1a9df000f727ec52651a51548c12ad66bca4b5dc
   ExpoClipboard: 695f274f8e028cd113837f917da40c76850877eb
   ExpoDocumentPicker: 5cb7389ff935b4addefdd466a606de51a512e922
   ExpoHead: 8da645502363b53eeb99d99276a0adbe0ec8cff0
   ExpoImage: e3170a9043c6a80080efbf2268b3df2334021949
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
-  ExpoModulesCore: e5a168deba84f74c0e558befa31dbaea06c00af0
+  ExpoModulesCore: 51cb2e7ab4c8da14be3f40b66d54c1781002e99d
   ExpoRandom: 4f2bba684312acd6c0700528ae62f85265776c84
   ExpoSecureStore: 57db3b6da8b59046e2057e95bf7738a8027b47c3
   ExpoSystemUI: fa4854e3226e87f86d3383570264c6e4e90bc782
@@ -837,10 +837,10 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 4941cc1b3cf08b792fbf666342c9fc95f1969035
   React-utils: b79f2411931f9d3ea5781404dcbb2fa8a837e13a
   ReactCommon: 4b2bdcb50a3543e1c2b2849ad44533686610826d
-  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
+  RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3
-  RNSVG: ed492aaf3af9ca01bc945f7a149d76d62e73ec82
+  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   SDWebImage: cb032eba469c54e0000e78bcb0a13cdde0a52798
   SDWebImageAVIFCoder: 8348fef6d0ec69e129c66c9fe4d74fbfbf366112
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c

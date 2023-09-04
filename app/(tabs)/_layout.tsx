@@ -1,4 +1,4 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@shopify/restyle";
 import { Link, Tabs, Slot } from "expo-router";
 import {
@@ -8,16 +8,16 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Theme } from "../../theme";
+import { Theme } from "@/theme";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
+  name: React.ComponentProps<typeof Ionicons>["name"];
   color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <Ionicons size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function Layout() {
@@ -29,13 +29,13 @@ export default function Layout() {
     return (
       <View style={styles.container}>
         <View style={styles.sidebar}>
-          <Link href="/" style={styles.link}>
+          <Link href="/home" style={styles.link}>
             Home
           </Link>
           <Link href="/score" style={styles.link}>
             Score
           </Link>
-          <Link href="/squads" style={styles.link}>
+          <Link href="/squad" style={styles.link}>
             Squads
           </Link>
           <Link href="/explore" style={styles.link}>
@@ -55,16 +55,18 @@ export default function Layout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: "Commits",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown:false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-add-circle" color={color} />
+          ),
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
+                  <Ionicons
+                    name="information-circle"
                     size={25}
                     color={
                       pressed
@@ -83,21 +85,27 @@ export default function Layout() {
         name="score"
         options={{
           title: "Score",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-pie-chart" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="squads"
+        name="squad"
         options={{
           title: "Squads",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-people-circle" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: "Explore",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-football" color={color} />
+          ),
         }}
       />
     </Tabs>

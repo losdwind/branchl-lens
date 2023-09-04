@@ -4,17 +4,14 @@ import {
   FlatList,
   ListRenderItemInfo,
 } from "react-native";
-import { Box } from "../../components/Box";
-import { Text } from "../../components/Text";
-import EditScreenInfo from "../../components/EditScreenInfo";
-import getProfileByAddress from "../../gql/query/getProfileByAddress";
-import getProfile from "../../gql/query/getProfile";
-import getPublications from "../../gql/query/getPublications";
-import { wallet } from "../../utils/wallet";
+import {EditScreenInfo, CardMoment, Box, Text} from "@/components";
+import getProfileByAddress from "@/gql/query/getProfileByAddress";
+import getProfile from "@/gql/query/getProfile";
+import getPublications from "@/gql/query/getPublications";
+import { wallet } from "@/utils/wallet";
 import { useQuery } from "@tanstack/react-query";
-import Publication from "../../types/Publication";
-import { Card, CardMoment } from "../../components/Card";
-import useLensUser from "../../utils/useLensUser";
+import Publication from "@/types/Publication";
+import useLensUser from "@/utils/useLensUser";
 // import {
 //   useAddress,
 //   useContract,

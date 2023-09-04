@@ -41,10 +41,13 @@ export const lightColors = {
 
     titleText: palette.black,
     bodyText: palette.gray900,
+    buttonTextActive: palette.white,
+    buttonTextInactive: palette.black,
+
 
     primaryButtonBackground: palette.primary900,
     secondaryButtonBackground: palette.secondary900,
-    inActiveButtonBackground: palette.gray100,
+    inActiveButtonBackground: palette.gray50,
 
     success: palette.success,
     warning: palette.warning,
@@ -58,10 +61,12 @@ export const darkColors = {
 
     titleText: palette.white,
     bodyText: palette.gray100,
+    buttonTextActive: palette.black,
+    buttonTextInactive: palette.white,
 
     primaryButtonBackground: palette.primary100,
     secondaryButtonBackground: palette.secondary100,
-    inActiveButtonBackground: palette.gray900,
+    inActiveButtonBackground: palette.gray950,
 
     success: palette.success,
     warning: palette.warning,

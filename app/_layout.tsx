@@ -1,13 +1,13 @@
 import "../utils/shims";
-import { ThirdWebProvider } from "../provider/ThirdwebProvider";
-import { ReactQueryProvider } from "../provider/ReactQueryProvider";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { lightTheme, darkTheme, Theme } from "../theme";
+import { ThirdwebProvider } from "@/provider/ThirdwebProvider";
+import { ReactQueryProvider } from "@/provider/ReactQueryProvider";
+import { lightTheme, darkTheme, Theme } from "@/theme";
 import { ThemeProvider, useTheme } from "@shopify/restyle";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -27,7 +27,7 @@ export default function RootLayout() {
     "EncodeSans-Regular": require("../assets/fonts/EncodeSans-Regular.ttf"),
     "EncodeSans-Medium": require("../assets/fonts/EncodeSans-Medium.ttf"),
     "EncodeSans-Bold": require("../assets/fonts/EncodeSans-Bold.ttf"),
-    ...FontAwesome.font,
+    ...Ionicons.font,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -53,7 +53,7 @@ function RootLayoutNav() {
   const theme = useTheme<Theme>();
 
   return (
-    <ThirdWebProvider>
+    <ThirdwebProvider>
       <ReactQueryProvider>
         <ThemeProvider theme={colorScheme === "dark" ? darkTheme : lightTheme}>
           <Stack
@@ -75,6 +75,6 @@ function RootLayoutNav() {
           </Stack>
         </ThemeProvider>
       </ReactQueryProvider>
-    </ThirdWebProvider>
+    </ThirdwebProvider>
   );
 }

@@ -3,6 +3,10 @@
   "compilerOptions": {
     "strict": true,
     "typeRoots": ["types"],
+    "baseUrl": ".",
+    "paths": {
+    "@/*": ["*"]
+  }
   },
   "include": [
     "**/*.ts",

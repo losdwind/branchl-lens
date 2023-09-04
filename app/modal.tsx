@@ -1,8 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { Platform, StyleSheet } from "react-native";
-import { Box } from "../components/Box";
-import { Text } from "../components/Text";
-import EditScreenInfo from "../components/EditScreenInfo";
+import {EditScreenInfo, Box, Text} from "../components";
 
 export default function ModalScreen() {
   return (

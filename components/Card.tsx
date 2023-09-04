@@ -24,8 +24,8 @@ export const Card = createRestyleComponent<Props, Theme>(
 );
 
 type CardMomentProps = {
-  title: string;
-  content: string;
+  title?: string;
+  content?: string;
   images?: string[];
   videos?: string[];
 };
@@ -38,9 +38,9 @@ export const CardMoment: React.FC<CardMomentProps> = ({
 }) => {
   return (
     <Card margin="m">
-      <Text variant="headline" numberOfLines={2} ellipsizeMode="tail">
+      {title && title.trim() !== "" && <Text variant="headline" numberOfLines={2} ellipsizeMode="tail">
         {title}
-      </Text>
+      </Text>}
       <Text variant="body" numberOfLines={5} ellipsizeMode="tail">
         {content}
       </Text>
