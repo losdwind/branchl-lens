@@ -23,7 +23,7 @@ export const authenticate = async (address: string, signature: string) => {
     })
     .toPromise();
 
-  console.log(response);
+  console.log("authentication response", response);
 
   return response.data.authenticate;
 };

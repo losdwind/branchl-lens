@@ -1,9 +1,11 @@
+import { lightColors, darkColors } from "./colors"
 import spacing from "./spacing"
 import borderRadius from "./borderRadius"
 import breakpoints from "./breakpoints"
 import textVariants from "./textVariants"
 import cardVariants from "./cardVariants"
-import { lightColors, darkColors } from "./colors"
+import imageVariants from "./imageVariant"
+
 
 import { createTheme } from "@shopify/restyle"
 
@@ -16,6 +18,7 @@ export const lightTheme = createTheme(
         borderRadii: borderRadius,
         textVariants: textVariants,
         cardVariants: cardVariants,
+        imageVariants: imageVariants
     }
 )
 

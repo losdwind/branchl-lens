@@ -1,14 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useTheme } from "@shopify/restyle";
+import { backgroundColor, useTheme } from "@shopify/restyle";
 import { Link, Tabs, Slot } from "expo-router";
-import {
-  Pressable,
-  useColorScheme,
-  Platform,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, Platform } from "react-native";
 import { Theme } from "@/theme";
+import { Box, Text } from "@/components";
+import LoginScreen from "../login";
+import useLensUser from "@/hooks/useLensUser";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -21,38 +19,50 @@ function TabBarIcon(props: {
 }
 
 export default function Layout() {
-  const colorScheme = useColorScheme();
   const theme = useTheme<Theme>();
-
+  const { isSignedIn } = useLensUser();
   if (Platform.OS === "web") {
     // use a basic layout on web which has a sidebar on the left and the main content on the right.
     return (
-      <View style={styles.container}>
-        <View style={styles.sidebar}>
-          <Link href="/home" style={styles.link}>
-            Home
+      <Box flexDirection={"row"} flexWrap={"wrap"} justifyContent={"center"}>
+        <Box width={150} padding={"m"} alignItems={"center"} gap={"m"}>
+          <Link href="/home">
+            <Text variant="headline">Home</Text>
           </Link>
-          <Link href="/score" style={styles.link}>
-            Score
+          <Link href="/score">
+            <Text variant="headline">Score</Text>
           </Link>
-          <Link href="/squad" style={styles.link}>
-            Squads
+          <Link href="/squad">
+            <Text variant="headline">Squads</Text>
           </Link>
-          <Link href="/explore" style={styles.link}>
-            Explore
+          <Link href="/explore">
+            <Text variant="headline">Explore</Text>
           </Link>
-        </View>
-        <View style={styles.mainContent}>
-          <Slot />
-        </View>
-      </View>
+          <Box padding={"m"} justifyContent={"center"} alignItems={"center"}>
+            <LoginScreen />
+          </Box>
+        </Box>
+        <Slot />
+      </Box>
     );
   }
+
+  console.log("isSignedIN", isSignedIn);
+
+  if (!isSignedIn) {
+    return (
+      <SafeAreaView>
+        <LoginScreen />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: theme.colors.primaryButtonBackground,
       }}
+      initialRouteName="home"
     >
       <Tabs.Screen
         name="home"
@@ -111,24 +121,3 @@ export default function Layout() {
     </Tabs>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  sidebar: {
-    width: 150,
-    backgroundColor: "#f5f8fa",
-    padding: 10,
-    alignItems: "center",
-  },
-  mainContent: {
-    flex: 1,
-  },
-  link: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-});

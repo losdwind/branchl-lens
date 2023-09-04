@@ -3,6 +3,7 @@ import {
   SafeAreaView,
   FlatList,
   ListRenderItemInfo,
+  ScrollView,
 } from "react-native";
 import {
   EditScreenInfo,
@@ -11,35 +12,21 @@ import {
   Text,
   TextButton,
 } from "@/components";
-import getProfileByAddress from "@/gql/query/getProfileByAddress";
-import getProfile from "@/gql/query/getProfile";
+
 import getPublications from "@/gql/query/getPublications";
 import { wallet } from "@/utils/wallet";
 import { useQuery } from "@tanstack/react-query";
 import Publication from "@/types/Publication";
-import useLensUser from "@/utils/useLensUser";
+import useLensUser from "@/hooks/useLensUser";
 import { useState } from "react";
-// import {
-//   useAddress,
-//   useContract,
-//   useSDK,
-//   useSigner,
-//   Web3Button,
-// } from "../../utils/thirdwebWapper"
+import LoginScreen from "@/app/login";
 
 export default function HomeScreen() {
   // Get the SDK and signer for us to use for interacting with the lens smart contract
-  // const sdk = useSDK();
-  // const signer = useSigner();
-  // const address = useAddress();
   // Load the same queries we did on the server-side.
   // Will load data instantly since it's already in the cache.
-  const { isSignedIn } = useLensUser();
-  const { data: profile, isLoading: loadingProfile } = useQuery(
-    ["profile"],
-    () => getProfile("atoms.lens")
-  );
-  console.log(profile);
+  const { isSignedIn, profile } = useLensUser();
+  console.log("profile",profile);
 
   // When the profile is loaded, load the publications for that profile
   const { data: publications, isLoading: loadingPublications } = useQuery(
@@ -73,28 +60,32 @@ export default function HomeScreen() {
   );
 
   if (loadingPublications) {
-    return <Text>Loading...</Text>;
+    return <Text>Loading Publications...</Text>;
   }
 
-  console.log(publications);
+  console.log("publications", publications)
 
   return (
-    <SafeAreaView >
-      <Box
-        flexDirection="row"
-        justifyContent="space-between"
-        gap={"s"}
-        paddingVertical={"s"}
-        margin="m"
-      >
-        {filters.map((filter) => (
-          <TextButton
-            key={filter}
-            label={filter}
-            onPress={() => setSelectedFilter(filter)}
-            isActive={filter === selectedFilter}
-          />
-        ))}
+    <SafeAreaView>
+      <Box>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <Box
+            flexDirection="row"
+            justifyContent="flex-start"
+            marginHorizontal="m"
+            paddingVertical="s"
+            gap="s"
+          >
+            {filters.map((filter) => (
+              <TextButton
+                key={filter}
+                label={filter}
+                onPress={() => setSelectedFilter(filter)}
+                isActive={filter === selectedFilter}
+              />
+            ))}
+          </Box>
+        </ScrollView>
       </Box>
       <FlatList
         data={publications.filter(filterFunction)}

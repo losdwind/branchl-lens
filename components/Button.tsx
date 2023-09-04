@@ -7,12 +7,12 @@ import { Box } from "./Box";
 type TextButtonProps = {
   label: string;
   onPress: () => void;
-  isActive: boolean;
+  isActive?: boolean;
 };
 
 type IconButtonProps = {
   icon: React.ReactNode;
-  onPress: () => void;
+  onPress?: () => void;
 };
 
 export const TextButton: React.FC<TextButtonProps> = ({
@@ -25,9 +25,9 @@ export const TextButton: React.FC<TextButtonProps> = ({
       backgroundColor={
         isActive ? "primaryButtonBackground" : "inActiveButtonBackground"
       }
-      paddingVertical={"xs"}
-      paddingHorizontal={"m"}
-      borderRadius={"s"}
+      paddingVertical="xs"
+      paddingHorizontal="m"
+      borderRadius="s"
     >
       <Pressable onPress={onPress}>
         <Text color={isActive ? "buttonTextActive" : "buttonTextInactive"}>

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import {EditScreenInfo} from "@/components";
+import { EditScreenInfo } from "@/components";
 import { Box } from "@/components/Box";
 import { Text } from "@/components/Text";
 export default function SquadScreen() {

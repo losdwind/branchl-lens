@@ -56,22 +56,19 @@ function RootLayoutNav() {
     <ThirdwebProvider>
       <ReactQueryProvider>
         <ThemeProvider theme={colorScheme === "dark" ? darkTheme : lightTheme}>
-          <Stack
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: "#f4511e",
-              },
-              headerTintColor: "#fff123",
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
-            }}
-          >
+          <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
               name="modal"
               options={{ presentation: "modal", headerTitle: "modals" }}
             />
+            {/* <Stack.Screen
+              name="login"
+              options={{
+                presentation: "fullScreenModal",
+                headerTitle: "login",
+              }}
+            /> */}
           </Stack>
         </ThemeProvider>
       </ReactQueryProvider>

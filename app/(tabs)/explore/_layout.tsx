@@ -4,14 +4,14 @@ import {
   FlatList,
   ListRenderItemInfo,
 } from "react-native";
-import {EditScreenInfo, CardMoment, Box, Text} from "@/components";
+import { EditScreenInfo, CardMoment, Box, Text } from "@/components";
 import getProfileByAddress from "@/gql/query/getProfileByAddress";
 import getProfile from "@/gql/query/getProfile";
 import getPublications from "@/gql/query/getPublications";
 import { wallet } from "@/utils/wallet";
 import { useQuery } from "@tanstack/react-query";
 import Publication from "@/types/Publication";
-import useLensUser from "@/utils/useLensUser";
+import useLensUser from "@/hooks/useLensUser";
 // import {
 //   useAddress,
 //   useContract,
@@ -19,7 +19,6 @@ import useLensUser from "@/utils/useLensUser";
 //   useSigner,
 //   Web3Button,
 // } from "../../utils/thirdwebWapper";
-
 
 export default function ExploreScreen() {
   // Get the SDK and signer for us to use for interacting with the lens smart contract
@@ -33,7 +32,6 @@ export default function ExploreScreen() {
     ["profile"],
     () => getProfile("atoms.lens")
   );
-  console.log(profile);
 
   // When the profile is loaded, load the publications for that profile
   const { data: publications, isLoading: loadingPublications } = useQuery(
@@ -57,7 +55,6 @@ export default function ExploreScreen() {
     return <Text>Loading...</Text>;
   }
 
-  console.log(publications);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

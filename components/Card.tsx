@@ -23,7 +23,7 @@ export const Card = createRestyleComponent<Props, Theme>(
   Box
 );
 
-type CardMomentProps = {
+type CardMomentProps = VariantProps<Theme, "cardVariants"> & {
   title?: string;
   content?: string;
   images?: string[];
@@ -35,12 +35,15 @@ export const CardMoment: React.FC<CardMomentProps> = ({
   content,
   images,
   videos,
+  variant,
 }) => {
   return (
-    <Card margin="m">
-      {title && title.trim() !== "" && <Text variant="headline" numberOfLines={2} ellipsizeMode="tail">
-        {title}
-      </Text>}
+    <Card marginHorizontal="m" marginVertical="s" variant={variant}>
+      {title && title.trim() !== "" && (
+        <Text variant="headline" numberOfLines={2} ellipsizeMode="tail">
+          {title}
+        </Text>
+      )}
       <Text variant="body" numberOfLines={5} ellipsizeMode="tail">
         {content}
       </Text>

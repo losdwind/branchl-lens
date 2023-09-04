@@ -8,10 +8,10 @@ const config = getDefaultConfig(__dirname, {
   isCSSEnabled: true,
 });
 config.resolver.sourceExts.push('mjs');
-config.resolver.sourceExts.push('web.tsx');
-config.resolver.sourceExts.push('native.tsx');
-config.resolver.sourceExts.push('web.ts');
-config.resolver.sourceExts.push('native.ts');
+// config.resolver.sourceExts.push('web.tsx');
+// config.resolver.sourceExts.push('native.tsx');
+// config.resolver.sourceExts.push('web.ts');
+// config.resolver.sourceExts.push('native.ts');
 
 config.resolver.extraNodeModules = extraNodeModules;
 config.transformer.getTransformOptions = async () => ({
