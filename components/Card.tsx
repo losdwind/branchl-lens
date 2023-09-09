@@ -38,7 +38,7 @@ export const CardMoment: React.FC<CardMomentProps> = ({
   variant,
 }) => {
   return (
-    <Card marginHorizontal="m" marginVertical="s" variant={variant}>
+    <Card variant={variant}>
       {title && title.trim() !== "" && (
         <Text variant="headline" numberOfLines={2} ellipsizeMode="tail">
           {title}

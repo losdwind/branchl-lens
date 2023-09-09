@@ -1,5 +1,5 @@
-import Profile from "../../types/Profile";
-import { basicClient } from "../initClient";
+import { Profile } from "../generated";
+import { basicClient } from "@/api/initClient";
 
 export const getProfileQuery = `
 query Profile($address: EthereumAddress!) {

@@ -1,0 +1,18 @@
+# 1. Schema - where is the graphql schema located ?
+schema : "https://api-mumbai.lens.dev"
+# 2. Documents - what path are the graphql operations located at ?
+# Our docuemnts are located at / src / graphql
+
+# 3 Where do we want to generate the output
+# What plugins do we want to include
+# what optional configuration flags do we want to include ?
+generates :
+    gql/generated.ts:
+        documents: "api/lens/*.graphql"
+        plugins:
+            - typescript
+            - typescript-operations
+            - typescript-react-query
+            - fragment-matcher
+        config:
+            dedupeFragments: true

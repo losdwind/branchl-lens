@@ -3,7 +3,7 @@ import { createClient as createUrqlClient, dedupExchange, fetchExchange } from '
 import { basicClient } from './initClient';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { STORAGE_KEY } from './initClient';
-import { refreshAccessToken } from './auth/refreshAccessToken';
+import { refreshAccessToken } from './lens/auth/refreshAccessToken';
 
 // Create an authenticated client on behalf of the current user.
 export async function createAuthenticatedClient() {

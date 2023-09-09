@@ -1,4 +1,4 @@
-import { createAuthenticatedClient } from "../initAuthenticatedClient";
+import { createAuthenticatedClient } from "../../initAuthenticatedClient";
 const followUserMutation = `
 mutation($request: FollowRequest!) { 
   createFollowTypedData(request: $request) {

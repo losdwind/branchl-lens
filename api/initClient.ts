@@ -1,5 +1,5 @@
 import { createClient as createUrqlClient, dedupExchange, fetchExchange } from "urql";
-import { refreshAccessToken } from "./auth/refreshAccessToken";
+import { refreshAccessToken } from "./lens/auth/refreshAccessToken";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { EXPO_PUBLIC_LENS_API } from "@env";
 

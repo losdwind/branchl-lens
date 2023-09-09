@@ -1,4 +1,4 @@
-import { basicClient } from "../initClient";
+import { basicClient } from "@/api/initClient";
 
 const doesFollowQuery = `
   query($request: DoesFollowRequest!) {

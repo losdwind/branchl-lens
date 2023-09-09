@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import parseJwt from "../../utils/parseJwt";
-import { basicClient, STORAGE_KEY } from "../initClient";
+import parseJwt from "../../../utils/parseJwt";
+import { basicClient, STORAGE_KEY } from "../../initClient";
 
 const refreshMutation = `
   mutation Refresh(

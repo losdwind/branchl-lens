@@ -13,7 +13,7 @@ import { Text, TextButton, Box, IconButton } from "@/components";
 import Avatar from "@/components/Avatar";
 import { Link } from "expo-router";
 
-export default function LoginScreen() {
+export default function LoginButton() {
   const sdk = useSDK();
   const address = useAddress();
   const isWrongNetwork = useNetworkMismatch();
@@ -22,12 +22,9 @@ export default function LoginScreen() {
     useLensUser();
 
   // connected a wallet
-  console.log("address", address)
+  console.log("address", address);
   if (!address) {
-    return (
-        <ConnectWallet />
-    );
-    
+    return <ConnectWallet />;
   }
 
   // sign in to lens
@@ -70,7 +67,12 @@ export default function LoginScreen() {
 
   if (profile) {
     return (
-      <Box justifyContent={"center"} alignItems={"center"} gap={"m"} padding={"l"}>
+      <Box
+        justifyContent={"center"}
+        alignItems={"center"}
+        gap={"m"}
+        padding={"l"}
+      >
         <Avatar variant={"l"} url={profile.picture.original.url} />
         <Text variant={"headline"}>{profile.handle}</Text>
 
@@ -83,6 +85,4 @@ export default function LoginScreen() {
       </Box>
     );
   }
-};
-
-
+}

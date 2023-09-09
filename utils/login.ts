@@ -1,7 +1,7 @@
 import { ThirdwebSDK } from "@thirdweb-dev/sdk";
-import { generateChallenge } from "../gql/auth/generateChallenge";
-import { authenticate } from "../gql/auth/getAccessToken";
-import { STORAGE_KEY } from "../gql/initClient";
+import { generateChallenge } from "../api/lens/auth/generateChallenge";
+import { authenticate } from "../api/lens/auth/getAccessToken";
+import { STORAGE_KEY } from "../api/initClient";
 import parseJwt from "./parseJwt";
 
 import { wallet } from "./wallet";

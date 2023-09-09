@@ -1,5 +1,5 @@
-import Profile from "../../types/Profile";
-import { basicClient } from "../initClient";
+import { Profile } from "../generated";
+import { basicClient } from "@/api/initClient";
 
 const exploreProfiles = `
 query ExploreProfiles {

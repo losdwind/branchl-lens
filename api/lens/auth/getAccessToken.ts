@@ -1,4 +1,4 @@
-import { basicClient } from "../initClient";
+import { basicClient } from "../../initClient";
 
 const authenticateMutation = `
   mutation($request: SignedAuthChallenge!) {

@@ -1,4 +1,4 @@
-import { basicClient } from "../initClient";
+import { basicClient } from "@/api/initClient";
 
 export const getPublicationsQuery = `
   query Publications($id: ProfileId!, $limit: LimitScalar) {

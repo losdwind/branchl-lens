@@ -62,13 +62,6 @@ function RootLayoutNav() {
               name="modal"
               options={{ presentation: "modal", headerTitle: "modals" }}
             />
-            {/* <Stack.Screen
-              name="login"
-              options={{
-                presentation: "fullScreenModal",
-                headerTitle: "login",
-              }}
-            /> */}
           </Stack>
         </ThemeProvider>
       </ReactQueryProvider>

@@ -1,4 +1,4 @@
-/* eslint-disable */
+import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -6,6 +6,26 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+
+function fetcher<TData, TVariables>(endpoint: string, requestInit: RequestInit, query: string, variables?: TVariables) {
+  return async (): Promise<TData> => {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      ...requestInit,
+      body: JSON.stringify({ query, variables }),
+    });
+
+    const json = await res.json();
+
+    if (json.errors) {
+      const { message } = json.errors[0];
+
+      throw new Error(message);
+    }
+
+    return json.data;
+  }
+}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -13,99 +33,52 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  /** Blockchain data scalar type */
   BlockchainData: { input: any; output: any; }
-  /** Broadcast scalar id type */
   BroadcastId: { input: any; output: any; }
-  /** ChainId custom scalar type */
   ChainId: { input: any; output: any; }
-  /** collect module data scalar type */
   CollectModuleData: { input: any; output: any; }
-  /** ContentEncryptionKey scalar type */
   ContentEncryptionKey: { input: any; output: any; }
-  /** Contract address custom scalar type */
   ContractAddress: { input: any; output: any; }
-  /** create handle custom scalar type */
   CreateHandle: { input: any; output: any; }
-  /** Cursor custom scalar type */
   Cursor: { input: any; output: any; }
-  /** The da id */
   DataAvailabilityId: { input: any; output: any; }
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: { input: any; output: any; }
-  /** EncryptedValue custom scalar type */
   EncryptedValueScalar: { input: any; output: any; }
-  /** Ens custom scalar type */
   Ens: { input: any; output: any; }
-  /** Ethereum address custom scalar type */
   EthereumAddress: { input: any; output: any; }
-  /** follow module data scalar type */
   FollowModuleData: { input: any; output: any; }
-  /** handle custom scalar type */
   Handle: { input: any; output: any; }
-  /** handle claim id custom scalar type */
   HandleClaimIdScalar: { input: any; output: any; }
-  /** image size transform custom scalar type */
   ImageSizeTransform: { input: any; output: any; }
-  /** Internal publication id custom scalar type */
   InternalPublicationId: { input: any; output: any; }
-  /** IpfsCid scalar type */
   IpfsCid: { input: any; output: any; }
-  /** jwt custom scalar type */
   Jwt: { input: any; output: any; }
-  /** limit custom scalar type */
   LimitScalar: { input: any; output: any; }
-  /** Locale scalar type */
   Locale: { input: any; output: any; }
-  /** Markdown scalar type */
   Markdown: { input: any; output: any; }
-  /** mimetype custom scalar type */
   MimeType: { input: any; output: any; }
-  /** Nft gallery id type */
   NftGalleryId: { input: any; output: any; }
-  /** Nft gallery name type */
   NftGalleryName: { input: any; output: any; }
-  /** Nft ownership id type */
   NftOwnershipId: { input: any; output: any; }
-  /** Nonce custom scalar type */
   Nonce: { input: any; output: any; }
-  /** The notification id */
   NotificationId: { input: any; output: any; }
-  /** ProfileId custom scalar type */
   ProfileId: { input: any; output: any; }
-  /** ProfileInterest custom scalar type */
   ProfileInterest: { input: any; output: any; }
-  /** proxy action scalar id type */
   ProxyActionId: { input: any; output: any; }
-  /** Publication id custom scalar type */
   PublicationId: { input: any; output: any; }
-  /** The publication tag */
   PublicationTag: { input: any; output: any; }
-  /** Publication url scalar type */
   PublicationUrl: { input: any; output: any; }
-  /** The reaction id */
   ReactionId: { input: any; output: any; }
-  /** reference module data scalar type */
   ReferenceModuleData: { input: any; output: any; }
-  /** Query search */
   Search: { input: any; output: any; }
-  /** Relayer signature */
   Signature: { input: any; output: any; }
-  /** Sources custom scalar type */
   Sources: { input: any; output: any; }
-  /** timestamp date custom scalar type */
   TimestampScalar: { input: any; output: any; }
-  /** The NFT token id */
   TokenId: { input: any; output: any; }
-  /** The tx hash */
   TxHash: { input: any; output: any; }
-  /** The tx id */
   TxId: { input: any; output: any; }
-  /** UnixTimestamp custom scalar type */
   UnixTimestamp: { input: any; output: any; }
-  /** Url scalar type */
   Url: { input: any; output: any; }
-  /** Represents NULL values */
   Void: { input: any; output: any; }
 };
 
@@ -4864,3 +4837,148 @@ export type WorldcoinPhoneVerifyWebhookRequest = {
   signal: Scalars['EthereumAddress']['input'];
   signalType: WorldcoinPhoneVerifyType;
 };
+
+export type CreateProfileMutationVariables = Exact<{
+  request: CreateProfileRequest;
+}>;
+
+
+export type CreateProfileMutation = { __typename?: 'Mutation', createProfile: { __typename: 'RelayError', reason: RelayErrorReasons } | { __typename: 'RelayerResult', txHash: any } };
+
+
+export const CreateProfileDocument = `
+    mutation createProfile($request: CreateProfileRequest!) {
+  createProfile(request: $request) {
+    ... on RelayerResult {
+      txHash
+    }
+    ... on RelayError {
+      reason
+    }
+    __typename
+  }
+}
+    `;
+export const useCreateProfileMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>
+    ) =>
+    useMutation<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>(
+      ['createProfile'],
+      (variables?: CreateProfileMutationVariables) => fetcher<CreateProfileMutation, CreateProfileMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, CreateProfileDocument, variables)(),
+      options
+    );
+
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
+      }
+      const result: PossibleTypesResultData = {
+  "possibleTypes": {
+    "BroadcastDataAvailabilityUnion": [
+      "CreateDataAvailabilityPublicationResult",
+      "RelayError"
+    ],
+    "CollectModule": [
+      "AaveFeeCollectModuleSettings",
+      "ERC4626FeeCollectModuleSettings",
+      "FeeCollectModuleSettings",
+      "FreeCollectModuleSettings",
+      "LimitedFeeCollectModuleSettings",
+      "LimitedTimedFeeCollectModuleSettings",
+      "MultirecipientFeeCollectModuleSettings",
+      "RevertCollectModuleSettings",
+      "SimpleCollectModuleSettings",
+      "TimedFeeCollectModuleSettings",
+      "UnknownCollectModuleSettings"
+    ],
+    "DataAvailabilityTransactionUnion": [
+      "DataAvailabilityComment",
+      "DataAvailabilityMirror",
+      "DataAvailabilityPost"
+    ],
+    "DataAvailabilityVerificationStatusUnion": [
+      "DataAvailabilityVerificationStatusFailure",
+      "DataAvailabilityVerificationStatusSuccess"
+    ],
+    "FeedItemRoot": [
+      "Comment",
+      "Post"
+    ],
+    "FollowModule": [
+      "FeeFollowModuleSettings",
+      "ProfileFollowModuleSettings",
+      "RevertFollowModuleSettings",
+      "UnknownFollowModuleSettings"
+    ],
+    "MainPostReference": [
+      "Mirror",
+      "Post"
+    ],
+    "MentionPublication": [
+      "Comment",
+      "Post"
+    ],
+    "MirrorablePublication": [
+      "Comment",
+      "Post"
+    ],
+    "Notification": [
+      "NewCollectNotification",
+      "NewCommentNotification",
+      "NewFollowerNotification",
+      "NewMentionNotification",
+      "NewMirrorNotification",
+      "NewReactionNotification"
+    ],
+    "ProfileMedia": [
+      "MediaSet",
+      "NftImage"
+    ],
+    "ProxyActionStatusResultUnion": [
+      "ProxyActionError",
+      "ProxyActionQueued",
+      "ProxyActionStatusResult"
+    ],
+    "Publication": [
+      "Comment",
+      "Mirror",
+      "Post"
+    ],
+    "PublicationForSale": [
+      "Comment",
+      "Post"
+    ],
+    "PublicationSearchResultItem": [
+      "Comment",
+      "Post"
+    ],
+    "ReferenceModule": [
+      "DegreesOfSeparationReferenceModuleSettings",
+      "FollowOnlyReferenceModuleSettings",
+      "UnknownReferenceModuleSettings"
+    ],
+    "RelayDataAvailabilityResult": [
+      "CreateDataAvailabilityPublicationResult",
+      "RelayError"
+    ],
+    "RelayResult": [
+      "RelayError",
+      "RelayerResult"
+    ],
+    "SearchResult": [
+      "ProfileSearchResult",
+      "PublicationSearchResult"
+    ],
+    "TransactionResult": [
+      "TransactionError",
+      "TransactionIndexedResult"
+    ]
+  }
+};
+      export default result;
+    

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAddress } from "../utils/thirdwebWrapper";
 import { useEffect, useState } from "react";
-import { STORAGE_KEY } from "../gql/initClient";
-import getProfileByAddress from "../gql/query/getProfileByAddress";
+import { STORAGE_KEY } from "../api/initClient";
+import getProfileByAddress from "@/api/lens/query/getProfileByAddress";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /**
