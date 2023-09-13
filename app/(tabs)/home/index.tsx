@@ -8,21 +8,19 @@ import {
 } from "react-native";
 import {
   EditScreenInfo,
-  CardMoment,
   Box,
   Text,
   TextButton,
   IconButton,
 } from "@/components";
+import { CardMoment } from "@/components/pattern/CardMoment";
 import { Stack, Link } from "expo-router";
 
-import getPublications from "@/api/lens/query/getPublications";
-import { wallet } from "@/utils/wallet";
-import { useQuery } from "@tanstack/react-query";
-import { Publication } from "@/src / graphql / generated";
-import useLensUser from "@/hooks/useLensUser";
+import { Publication, PublicationTypes } from "@/api/lens/generated";
+import useLensUser from "@/api/lens/auth/useLensUser";
 import { useState } from "react";
-import LoginButton from "@/components/LoginButton";
+import LoginButton from "@/components/pattern/LoginButton";
+import { usePublicationsQuery } from "@/api/lens/generated";
 
 export default function HomeScreen() {
   // Get the SDK and signer for us to use for interacting with the lens smart contract
@@ -32,14 +30,19 @@ export default function HomeScreen() {
   console.log("profile", profile);
 
   // When the profile is loaded, load the publications for that profile
-  const { data: publications, isLoading: loadingPublications } = useQuery(
-    ["publications"],
-    () => getPublications(profile?.id as string, 10),
-    {
-      // Only run this query if the profile is loaded
-      enabled: !!profile,
-    }
-  );
+  const { data: publications, isLoading: loadingPublications } =
+    usePublicationsQuery(
+      {
+        request: {
+          profileId: profile?.defaultProfile?.id,
+          limit: 10,
+          publicationTypes: [PublicationTypes.Post],
+        },
+      },
+      {
+        enabled: !!profile?.defaultProfile?.id,
+      }
+    );
 
   const filters = ["All", "Moment", "Todo", "Person", "Branch"]; // Replace with your actual filters
   const [selectedFilter, setSelectedFilter] = useState("All");
@@ -48,7 +51,7 @@ export default function HomeScreen() {
       return true;
     }
 
-    if (!item.metadata.tags) {
+    if (item.metadata.tags) {
       return item.metadata.tags[0] === selectedFilter;
     }
 
@@ -64,51 +67,52 @@ export default function HomeScreen() {
     </Box>
   );
 
-  if (loadingPublications) {
-    return <Text>Loading Publications...</Text>;
-  }
-
   console.log("publications", publications);
 
   return (
-    <SafeAreaView>
-      <Stack.Screen options={{ headerShown: false }} />
+    <SafeAreaView style={{ flex: 1, flexGrow: 1 }}>
+      <Box>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <Box
+            flexDirection="row"
+            justifyContent="flex-start"
+            paddingVertical="s"
+            gap="s"
+            marginHorizontal={"m"}
+          >
+            {filters.map((filter) => (
+              <TextButton
+                key={filter}
+                label={filter}
+                onPress={() => setSelectedFilter(filter)}
+                isActive={filter === selectedFilter}
+              />
+            ))}
+          </Box>
+        </ScrollView>
+      </Box>
+
       <FlatList
-        data={publications.filter(filterFunction)}
-        renderItem={({ item }) => <Item publication={item} />}
+        data={publications?.publications.items.filter((item) =>
+          filterFunction(item as Publication)
+        )}
+        renderItem={({ item }) => <Item publication={item as Publication} />}
         keyExtractor={(item) => item.id}
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
         inverted
         contentContainerStyle={{ flexDirection: "column-reverse" }}
-        ListHeaderComponent={
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Box
-              flexDirection="row"
-              justifyContent="flex-start"
-              paddingVertical="s"
-              gap="s"
-              marginHorizontal={"m"}
-            >
-              {filters.map((filter) => (
-                <TextButton
-                  key={filter}
-                  label={filter}
-                  onPress={() => setSelectedFilter(filter)}
-                  isActive={filter === selectedFilter}
-                />
-              ))}
-            </Box>
-          </ScrollView>
-        }
-        ListFooterComponent={
-          <Box alignSelf={"center"} marginVertical={"m"} marginHorizontal={"m"}>
-            <Link href={"/(tabs)/home/compose"} asChild>
-              <IconButton icon="add" />
-            </Link>
+        ListEmptyComponent={
+          <Box alignSelf={"center"}>
+            <Text variant={"footnote"}>Loading Publications...</Text>
           </Box>
         }
       />
+      <Box alignSelf={"center"} marginVertical={"m"} marginHorizontal={"m"}>
+        <Link href={"/(tabs)/home/compose"} asChild>
+          <IconButton icon="add" />
+        </Link>
+      </Box>
     </SafeAreaView>
   );
 }

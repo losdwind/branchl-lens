@@ -13,7 +13,7 @@ type HorizontalStackedAvatarsProps = VariantProps<Theme, "imageVariants"> & {
   urls: string[];
 };
 
-const HorizontalStackedAvatars: React.FC<HorizontalStackedAvatarsProps> = ({
+export const HorizontalStackedAvatars: React.FC<HorizontalStackedAvatarsProps> = ({
   urls,
   variant,
 }) => {

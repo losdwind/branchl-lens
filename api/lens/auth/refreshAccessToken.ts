@@ -1,51 +1,59 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import parseJwt from "../../../utils/parseJwt";
-import { basicClient, STORAGE_KEY } from "../../initClient";
+import {
+  RefreshMutation,
+  RefreshMutationVariables,
+  RefreshDocument,
+} from "../generated";
+import { readAccessToken, setAccessToken } from "./helpers";
 
-const refreshMutation = `
-  mutation Refresh(
-    $refreshToken: Jwt!
-  ) {
-    refresh(request: {
-      refreshToken: $refreshToken
-    }) {
-      accessToken
-      refreshToken
+export default async function refreshAccessToken() {
+  // 1. Get our current refresh token from local storage
+  const { refreshToken: currentRefreshToken } = await readAccessToken();
+
+  if (!currentRefreshToken) return null;
+
+  async function fetchData<TData, TVariables>(
+    query: string,
+    variables?: TVariables,
+    options?: RequestInit["headers"]
+  ): Promise<TData> {
+    const res = await fetch("https://api.lens.dev/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...options,
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+    });
+
+    const json = await res.json();
+
+    if (json.errors) {
+      const { message } = json.errors[0] || {};
+      throw new Error(message || "Error…");
     }
+
+    return json.data;
   }
-`;
 
-/**
- * An access token is sent to the API to authenticate the user.
- * The access token expires after 30 minutes.
- * The refresh token can be used to get a new access token.
- * This function loads the refresh token from local storage and uses it to get a new access token.
- */
-export const refreshAccessToken = async () => {
-  const localStorageValue = await AsyncStorage.getItem(STORAGE_KEY);
-  if (!localStorageValue) return null;
-
-  const response = await basicClient
-    .mutation(refreshMutation, {
-      refreshToken: JSON.parse(localStorageValue).refreshToken,
-    })
-    .toPromise();
-
-  if (!response.data) return null;
-
-  const { accessToken, refreshToken } = response.data.refresh;
-  const exp = parseJwt(refreshToken).exp;
-
-  AsyncStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify({
-      accessToken,
-      refreshToken,
-      exp,
-    })
+  // 3. set the new access token in local storage
+  const result = await fetchData<RefreshMutation, RefreshMutationVariables>(
+    RefreshDocument,
+    {
+      request: {
+        refreshToken: currentRefreshToken,
+      },
+    }
   );
 
-  return {
-    accessToken,
-  };
-};
+  const {
+    refresh: { accessToken, refreshToken: newRefreshToken },
+  } = result;
+
+  setAccessToken(accessToken, newRefreshToken);
+
+  return accessToken as string;
+}

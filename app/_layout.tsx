@@ -4,11 +4,12 @@ import { ReactQueryProvider } from "@/provider/ReactQueryProvider";
 import { lightTheme, darkTheme, Theme } from "@/theme";
 import { ThemeProvider, useTheme } from "@shopify/restyle";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack, Slot } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
+import { Platform } from "react-native";
+import { Header } from "@/components/Header";
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -30,6 +31,8 @@ export default function RootLayout() {
     ...Ionicons.font,
   });
 
+  const colorScheme = useColorScheme();
+
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -44,13 +47,6 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-  const theme = useTheme<Theme>();
 
   return (
     <ThirdwebProvider>

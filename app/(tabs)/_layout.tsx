@@ -4,11 +4,12 @@ import { Link, Tabs, Slot } from "expo-router";
 import { Pressable, Platform } from "react-native";
 import { Theme } from "@/theme";
 import { Box, Text } from "@/components";
-import LoginButton from "../../components/LoginButton";
-import useLensUser from "@/hooks/useLensUser";
+import LoginButton from "../../components/pattern/LoginButton";
+import useLensUser from "@/api/lens/auth/useLensUser";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "@/components/Header";
-
+import { Stack } from "expo-router";
+import HomeScreen from "./home";
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
@@ -19,49 +20,21 @@ function TabBarIcon(props: {
   return <Ionicons size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-export default function Layout() {
+export default function TabLayout() {
   const theme = useTheme<Theme>();
-  const { isSignedIn } = useLensUser();
-  // if (Platform.OS === "web") {
-  //   // use a basic layout on web which has a sidebar on the left and the main content on the right.
-  //   return (
-  //     <Box
-  //       flexWrap={"wrap"}
-  //       justifyContent={"flex-start"}
-  //       alignItems={"flex-start"}
-  //       width={800}
-  //     >
-  //       <Box
-  //         flexDirection={"row"}
-  //         padding={"m"}
-  //         justifyContent={"center"}
-  //         alignItems={"center"}
-  //       >
-  //         <Header />
-  //         <LoginButton />
-  //       </Box>
-  //       <Slot />
-  //     </Box>
-  //   );
-  // }
 
-  console.log("isSignedIN", isSignedIn);
-
-  if (!isSignedIn) {
-    return (
-      <SafeAreaView>
-        <Box alignSelf={"center"} marginTop={"xl"}>
-          <LoginButton />
-        </Box>
-      </SafeAreaView>
-    );
+  if(Platform.OS === 'web'){
+    return <>
+    <Header />
+    <Slot />
+    </>
   }
-
+  
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: theme.colors.primaryButtonBackground,
-        headerShown:false
+        headerShown: false,
       }}
       initialRouteName="home"
     >

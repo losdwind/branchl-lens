@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet } from "react-native";
 import { Text } from "./Text";
-import React from "react";
+import React, { forwardRef } from "react";
 import { Box } from "./Box";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -39,12 +39,14 @@ export const TextButton: React.FC<TextButtonProps> = ({
   );
 };
 
-export const IconButton: React.FC<IconButtonProps> = ({ icon, onPress }) => {
+export const IconButton = forwardRef((props: IconButtonProps, ref) => {
+  const { icon, onPress } = props;
+
   return (
-    <Box>
+    <Box ref={ref}>
       <Pressable onPress={onPress}>
         <Ionicons name={icon} size={24} color="black" />
       </Pressable>
     </Box>
   );
-};
+});

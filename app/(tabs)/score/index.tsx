@@ -1,14 +1,19 @@
 import { StyleSheet } from "react-native";
-
 import { EditScreenInfo } from "@/components";
 import { Box } from "@/components/Box";
 import { Text } from "@/components/Text";
-export default function SquadLayout() {
+import LoginButton from "@/components/pattern/LoginButton";
+import useLensUser from "@/api/lens/auth/useLensUser";
+
+export default function ScoreScreen() {
   return (
     <Box style={styles.container}>
-      <Text style={styles.title}>Squad</Text>
+      <Box alignSelf={"center"} marginTop={"xl"}>
+        <LoginButton />
+      </Box>
+      <Text style={styles.title}>Score</Text>
       <Box style={styles.separator} />
-      <EditScreenInfo path="app/(tabs)/squad.tsx" />
+      <EditScreenInfo path="app/(tabs)/score.tsx" />
     </Box>
   );
 }

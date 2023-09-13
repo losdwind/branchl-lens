@@ -1,23 +1,17 @@
-import { basicClient } from "../../initClient";
+import { fetcher } from "../auth-fetcher";
+import {
+  ChallengeQuery,
+  ChallengeQueryVariables,
+  ChallengeDocument,
+} from "../generated";
 
-const getChallengeQuery = `
-    query($request: ChallengeRequest!) {
-        challenge(request: $request) { text }
-    }
-`;
-
-/**
- * Generate a message the user can sign to sign in with Lens
- * https://docs.lens.xyz/docs/login#challenge
- */
-export const generateChallenge = async (address: string) => {
-  const response = await basicClient
-    .query(getChallengeQuery, {
+export default async function generateChallenge(address: string) {
+  return await fetcher<ChallengeQuery, ChallengeQueryVariables>(
+    ChallengeDocument,
+    {
       request: {
         address,
       },
-    })
-    .toPromise();
-
-  return response.data.challenge.text;
-};
+    }
+  )();
+}

@@ -9,21 +9,23 @@ import {
 } from "react-native";
 import {
   EditScreenInfo,
-  CardMoment,
   Box,
   Text,
   TextButton,
   IconButton,
 } from "@/components";
 import { Stack, Link } from "expo-router";
-
-import getPublications from "@/api/lens/query/getPublications";
-import { wallet } from "@/utils/wallet";
 import { useQuery } from "@tanstack/react-query";
-import { Publication } from "@/src / graphql / generated";
-import useLensUser from "@/hooks/useLensUser";
+import { Publication, Profile } from "@/api/lens/generated";
+import useLensUser from "@/api/lens/auth/useLensUser";
 import { useState } from "react";
-import LoginButton from "@/components/LoginButton";
+import {
+  PublicationSortCriteria,
+  PublicationTypes,
+  useExplorePublicationsQuery,
+} from "@/api/lens/generated";
+import CardBranch from "@/components/pattern/CardBranch";
+import { CardMoment } from "@/components/pattern/CardMoment";
 
 export default function ExploreScreen() {
   // Get the SDK and signer for us to use for interacting with the lens smart contract
@@ -32,24 +34,24 @@ export default function ExploreScreen() {
   const { isSignedIn, profile } = useLensUser();
   console.log("profile", profile);
 
-  // When the profile is loaded, load the publications for that profile
-  const { data: publications, isLoading: loadingPublications } = useQuery(
-    ["publications"],
-    () => getPublications(profile?.id as string, 10),
-    {
-      // Only run this query if the profile is loaded
-      enabled: !!profile,
-    }
-  );
+  const { data: publications, isLoading: loadingPublications } =
+    useExplorePublicationsQuery({
+      request: {
+        publicationTypes: [PublicationTypes.Post],
+        sortCriteria: PublicationSortCriteria.TopCommented,
+      },
+    });
 
-  const filters = ["All", "Moment", "Todo", "Person", "Branch"]; // Replace with your actual filters
+  console.log("explored publication", publications);
+
+  const filters = ["All", "Moment", "Todo", "Person", "Branch"];
   const [selectedFilter, setSelectedFilter] = useState("All");
   const filterFunction = (item: Publication) => {
     if (selectedFilter === "All") {
       return true;
     }
 
-    if (!item.metadata.tags) {
+    if (item.metadata.tags) {
       return item.metadata.tags[0] === selectedFilter;
     }
 
@@ -67,11 +69,15 @@ export default function ExploreScreen() {
       >
         <Pressable>
           <Box marginHorizontal={"m"}>
-            <CardMoment
+            {/* <CardMoment
               content={publication.metadata.content}
               images={
                 publication.metadata.image ? [publication.metadata.image] : []
               }
+            /> */}
+            <CardBranch
+              publication={publication}
+              signedInUser={profile?.defaultProfile as Profile}
             />
           </Box>
         </Pressable>
@@ -80,17 +86,22 @@ export default function ExploreScreen() {
   );
 
   if (loadingPublications) {
-    return <Text>Loading Publications...</Text>;
+    return (
+      <Box alignSelf={"center"}>
+        <Text>Loading Publications...</Text>
+      </Box>
+    );
   }
 
   console.log("publications", publications);
 
   return (
-    <SafeAreaView>
-      <Stack.Screen options={{ headerShown: false }} />
+    <SafeAreaView style={{ flex: 1, flexGrow: 1 }}>
       <FlatList
-        data={publications.filter(filterFunction)}
-        renderItem={({ item }) => <Item publication={item} />}
+        data={publications?.explorePublications.items.filter((item) =>
+          filterFunction(item as Publication)
+        )}
+        renderItem={({ item }) => <Item publication={item as Publication} />}
         keyExtractor={(item) => item.id}
         inverted
         contentContainerStyle={{ flexDirection: "column-reverse" }}
